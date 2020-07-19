@@ -38,3 +38,30 @@ test = pd.concat([test, male, embarked, p_class], axis=1)
 test.drop("female", axis = 1, inplace=True)
 test.drop("S", axis = 1, inplace=True)
 test.drop(3, axis = 1, inplace=True)
+
+#test.dropna(inplace=True) -> Don't work
+column_means = test.mean()
+test = test.fillna(column_means)
+
+#TRAIN. Separate X_train (no label) and Y_train (label)
+X_train = train.loc[:, train.columns != "Survived"]
+Y_train = train.loc[:, "Survived"].values
+
+#TEST. X_test (all the columns)
+X_test = test
+
+#Scaler X_train and X_test
+from sklearn.preprocessing import MinMaxScaler
+scaling = MinMaxScaler(feature_range=(0,1)).fit(X_train)
+X_train = scaling.transform(X_train)
+X_test = scaling.transform(X_test)
+
+#Crearte and fit the model
+svm = SVC(kernel='poly', C=1, random_state=1)
+svm.fit(X_train, Y_train)
+
+y_pred = svm.predict(X_test)
+
+output = pd.DataFrame({'PassengerId': test["PassengerId"], 'Survived': y_pred})
+output.to_csv('submission.csv', index=False)
+
