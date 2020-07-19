@@ -110,3 +110,35 @@ def utility(board):
         return 0
     raise NotImplementedError
 
+def minimax(board):
+    if player(board) == X:
+        v = -999999999999999999
+        for action in actions(board):
+            k = min_value(result(board, action))
+            if k > v:
+                v = k
+                bestaction = action
+    else:
+        v = 999999999999999999
+        for action in actions(board):
+            k = max_value(result(board, action))
+            if k < v:
+                v = k
+                bestaction = action
+    return bestaction
+
+def max_value(board):
+    if terminal(board):
+        return utility(board)
+    v = -999999999999999999
+    for action in actions(board):
+        v = max(v, min_value(result(board, action)))
+    return v
+
+def min_value(board):
+    if terminal(board):
+        return utility(board)
+    v = 999999999999999999
+    for action in actions(board):
+        v = min(v, max_value(result(board, action)))
+    return v    #FIXED
