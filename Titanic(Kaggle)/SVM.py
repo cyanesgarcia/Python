@@ -3,8 +3,8 @@ from sklearn.svm import SVC
 import pandas as pd
 
 #Open CSV
-train = pd.read_csv("/content/drive/My Drive/Claudia y Lidia/Competition & Projects/Titanic/train.csv")
-test = pd.read_csv("/content/drive/My Drive/Claudia y Lidia/Competition & Projects/Titanic/test.csv")
+train = pd.read_csv("train.csv")
+test = pd.read_csv("test.csv")
 
 #Normalize the data. Delete string(0-1) and unnecesary columns
 ##Train
