@@ -86,6 +86,41 @@ def preprocess(sentence):
     return res
     #raise NotImplementedError
     
+def np_chunk_helper(tree, List):
+    if tree == None:
+        return
+    cnt = 0
+    tmp = []
+    for t in tree.subtrees():
+        if t.label() == "NP":
+            tmp.append(t)
+            cnt += 1
+    if cnt == 1:
+        t = tmp[0]
+        if t not in List:
+            List.append(t)
+        return
+    elif cnt > 1:
+        for t in tree.subtrees():
+            if t != tree:
+                np_chunk_helper(t, List)
+    
+        return
+    
+    return
+
+def np_chunk(tree):
+    """
+    Return a list of all noun phrase chunks in the sentence tree.
+    A noun phrase chunk is defined as any subtree of the sentence
+    whose label is "NP" that does not itself contain any other
+    noun phrases as subtrees.
+    """
+    List = []
+    np_chunk_helper(tree, List)
+    
+    return List
+    #raise NotImplementedError
 
 
 
